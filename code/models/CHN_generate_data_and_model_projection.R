@@ -4,7 +4,7 @@ suppressPackageStartupMessages(library(lfe))
 source("code/models/predict_felm.R")
 source("code/models/projection_helper_functions.R")
 source("code/data/multi_country/get_JHU_country_data.R")
-underreporting <- read_csv("data/interim/multi_country/under_reporting.csv",
+underreporting <- read_csv("data/Interim/under_reporting.csv",
                            col_types = cols(
                              country = col_character(),
                              total_cases = col_double(),
