@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+ggplot(data = main_projection, aes(x = date)) +
+  geom_line(aes(y = predicted_cum_confirmed_cases_true), col = "black") +
+  geom_line(aes(y = predicted_cum_confirmed_cases_no_policy), col = "red",)
+```
+
+```{r}
+ggplot(data = main_projection, aes(x = date)) +
+  geom_line(aes(y = log(predicted_cum_confirmed_cases_true)), col = "black") +
+  geom_line(aes(y = log(predicted_cum_confirmed_cases_no_policy)), col = "red")
+```
