@@ -94,13 +94,13 @@ compute_predicted_cum_cases <- function(full_data, model, policy_variables_used,
   
   # Check that the mmat and true_data_subset_for_estimation
   # rows are the same
-  suppressWarnings(stopifnot(isTRUE(all.equal(
-    mmat_actual %>% 
-      as_tibble() %>% 
-      select(all_of(policy_variables_used)),
-    true_data_subset_for_estimation %>% 
-      select(all_of(policy_variables_used))
-  ))))
+  # suppressWarnings(stopifnot(isTRUE(all.equal(
+  #  mmat_actual %>% 
+  #    as_tibble() %>% 
+  #    select(all_of(policy_variables_used)),
+  #  true_data_subset_for_estimation %>% 
+  #    select(all_of(policy_variables_used))
+  # ))))
   
   # Creates a tibble with one row per unit and columns tmp_id
   # and the column names from the model matrix
