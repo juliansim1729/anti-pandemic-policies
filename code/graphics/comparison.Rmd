@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+rm(list = ls())
+```
+
+
+```{r}
+source("code/models/CHN_generate_data_and_model_projection.R")
+```
+
+
+
+
+```{r}
+cumulative_infections_counts <-
+  china_data %>%
+  group_by(date) %>%
+  summarize(cum_infections = sum(cum_confirmed_cases, na.rm = T))
+```
+
+```{r}
+head(cumulative_infections_counts)
+```
+
+```{r}
+method_comparison <- inner_join(cumulative_infections_counts, main_projection, by = "date")
+```
+
+```{r}
+tf_cols <- c("cum_infections", "predicted_cum_confirmed_cases_true", "predicted_cum_confirmed_cases_no_policy")
+
+log_method_comparison <- method_comparison
+log_method_comparison[tf_cols] <- log(log_method_comparison[tf_cols])
+```
+
+```{r}
+# comparing actual predictions of umulative infections
+# black line = true
+# red line = their prediction
+# blue line = our prediction
+ggplot(data = method_comparison, aes(x = date)) +
+  geom_line(aes(y = cum_infections), color = "black") +
+  geom_line(aes(y = predicted_cum_confirmed_cases_true), color = "red"x`1)
+```
+
