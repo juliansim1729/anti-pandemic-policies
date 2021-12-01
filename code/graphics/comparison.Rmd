@@ -13,8 +13,6 @@ source("code/models/CHN_generate_data_and_model_projection.R")
 ```
 
 
-
-
 ```{r}
 cumulative_infections_counts <-
   china_data %>%
@@ -44,6 +42,6 @@ log_method_comparison[tf_cols] <- log(log_method_comparison[tf_cols])
 # blue line = our prediction
 ggplot(data = method_comparison, aes(x = date)) +
   geom_line(aes(y = cum_infections), color = "black") +
-  geom_line(aes(y = predicted_cum_confirmed_cases_true), color = "red"x`1)
+  geom_line(aes(y = predicted_cum_confirmed_cases_true), color = "red")
 ```
 
