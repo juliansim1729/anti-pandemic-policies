@@ -7,11 +7,13 @@ output: html_notebook
 rm(list = ls())
 ```
 
+# Their Model
 
 ```{r}
 source("code/models/CHN_generate_data_and_model_projection.R")
 ```
 
+# Compiling Actual Information
 
 ```{r}
 cumulative_infections_counts <-
@@ -29,6 +31,27 @@ method_comparison <- inner_join(cumulative_infections_counts, main_projection, b
 ```
 
 ```{r}
+method_comparison$dates_since <- as.integer(method_comparison$date - as.Date("2020-01-16"))
+```
+
+# Our Model
+
+```{r}
+logistic_curve_model <- nls(cum_infections ~ SSlogis(dates_since, Asym, xmid, scal), data = method_comparison)
+coefs <- summary(logistic_curve_model)$coef
+```
+
+```{r}
+c <- coefs[1]
+a <- coefs[2]
+k <- 1/coefs[3]
+
+method_comparison$predicted_cum_confirmed_cases <- c/(1 + exp(-k*(method_comparison$dates_since - a)))
+```
+
+# Graphical Aids
+
+```{r}
 tf_cols <- c("cum_infections", "predicted_cum_confirmed_cases_true", "predicted_cum_confirmed_cases_no_policy")
 
 log_method_comparison <- method_comparison
@@ -36,12 +59,22 @@ log_method_comparison[tf_cols] <- log(log_method_comparison[tf_cols])
 ```
 
 ```{r}
-# comparing actual predictions of umulative infections
+method_comparison <- select(method_comparison, date, dates_since, real_count = cum_infections, parent_pred = predicted_cum_confirmed_cases_true, student_pred = predicted_cum_confirmed_cases)
+
+head(method_comparison)
+```
+
+
+# Result
+
+```{r}
+# comparing actual predictions of cumulative infections
 # black line = true
 # red line = their prediction
 # blue line = our prediction
 ggplot(data = method_comparison, aes(x = date)) +
-  geom_line(aes(y = cum_infections), color = "black") +
-  geom_line(aes(y = predicted_cum_confirmed_cases_true), color = "red")
+  geom_line(aes(y = real_count), color = "black") +
+  geom_line(aes(y = parent_pred), color = "red") +
+  geom_line(aes(y = student_pred), color = "blue")
 ```
 
